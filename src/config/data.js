@@ -8,12 +8,12 @@ import strawberry from "../images/strawberry.jpg";
 import grapes from "../images/grapes.jpg";
 
 export const Images = [
-  { src: apple, repeat: 2 },
-  { src: orange, repeat: 2 },
-  { src: pineapple, repeat: 2 },
-  { src: banana, repeat: 2 },
-  { src: kiwi, repeat: 2 },
-  { src: watermelon, repeat: 2 },
-  { src: strawberry, repeat: 2 },
-  { src: grapes, repeat: 2 }
+  { id: 1, src: apple, repeat: 2 },
+  { id: 2, src: orange, repeat: 2 },
+  { id: 3, src: pineapple, repeat: 2 },
+  { id: 4, src: banana, repeat: 2 },
+  { id: 5, src: kiwi, repeat: 2 },
+  { id: 6, src: watermelon, repeat: 2 },
+  { id: 7, src: strawberry, repeat: 2 },
+  { id: 8, src: grapes, repeat: 2 }
 ];
