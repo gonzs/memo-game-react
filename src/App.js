@@ -5,14 +5,13 @@ import Row from "./Row";
 class App extends Component {
   state = {
     boardGame: [],
-    solved: false,
+    toSolve: 0,
     movs: []
   };
 
   componentDidMount() {
-    let board = [];
-
     const n = 8;
+    let board = [];
     let index = 0;
 
     for (let i = 0; i < n / 2; i++) {
@@ -33,7 +32,7 @@ class App extends Component {
       board.push(auxBoard);
     }
 
-    this.setState({ boardGame: board });
+    this.setState({ boardGame: board, toSolve: n });
   }
 
   changeCard = (rowNumber, colNumber) => {
@@ -42,37 +41,40 @@ class App extends Component {
       colNumber
     ].show;
 
+    let updatedMovs = this.state.movs.concat([
+      { row: rowNumber, col: colNumber }
+    ]);
+
     this.setState({
       boardGame: boardGame,
-      movs: this.state.movs.concat([{ row: rowNumber, col: colNumber }])
+      movs: updatedMovs
     });
 
-    setInterval(() => {
-      if (this.state.movs.length === 2) this.checkIsCorrect();
-    }, 10);
+    if (updatedMovs.length === 2) this.checkIsCorrect(updatedMovs, boardGame);
   };
 
-  checkIsCorrect = () => {
-    let mov1 = this.state.movs[0];
-    let mov2 = this.state.movs[1];
-    let boardGame = this.state.boardGame;
+  checkIsCorrect = (movs, boardGame) => {
+    let mov1 = movs[0];
+    let mov2 = movs[1];
     let id1 = boardGame[mov1.row][mov1.col].id;
     let id2 = boardGame[mov2.row][mov2.col].id;
 
     if (id1 === id2) {
-      console.log("iguales");
       boardGame[mov1.row][mov1.col].solved = true;
       boardGame[mov2.row][mov2.col].solved = true;
       boardGame[mov1.row][mov1.col].show = true;
       boardGame[mov2.row][mov2.col].show = true;
-      this.setState({ boardGame: boardGame, movs: [] });
+      this.setState({
+        boardGame: boardGame,
+        movs: [],
+        toSolve: this.state.toSolve - 1
+      });
     } else {
-      console.log("distintos");
-      boardGame[mov1.row][mov1.col].show = false;
-      boardGame[mov2.row][mov2.col].show = false;
-      setInterval(() => {
+      setTimeout(() => {
+        boardGame[mov1.row][mov1.col].show = false;
+        boardGame[mov2.row][mov2.col].show = false;
         this.setState({ boardGame: boardGame, movs: [] });
-      }, 1000);
+      }, 1500);
     }
   };
 
