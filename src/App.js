@@ -6,7 +6,8 @@ class App extends Component {
   state = {
     boardGame: [],
     toSolve: 0,
-    movs: []
+    movs: [],
+    block: false
   };
 
   componentDidMount() {
@@ -35,22 +36,27 @@ class App extends Component {
     this.setState({ boardGame: board, toSolve: n });
   }
 
-  changeCard = (rowNumber, colNumber) => {
-    let boardGame = this.state.boardGame;
-    boardGame[rowNumber][colNumber].show = !this.state.boardGame[rowNumber][
-      colNumber
-    ].show;
+  changeCard = async (rowNumber, colNumber) => {
+    if (this.state.movs.length < 2) {
+      let boardGame = this.state.boardGame;
+      boardGame[rowNumber][colNumber].show = !this.state.boardGame[rowNumber][
+        colNumber
+      ].show;
 
-    let updatedMovs = this.state.movs.concat([
-      { row: rowNumber, col: colNumber }
-    ]);
+      let updatedMovs = this.state.movs.concat([
+        { row: rowNumber, col: colNumber }
+      ]);
 
-    this.setState({
-      boardGame: boardGame,
-      movs: updatedMovs
-    });
+      this.setState({
+        boardGame: boardGame,
+        movs: updatedMovs
+      });
 
-    if (updatedMovs.length === 2) this.checkIsCorrect(updatedMovs, boardGame);
+      if (updatedMovs.length === 2)
+        setTimeout(() => {
+          this.checkIsCorrect(updatedMovs, boardGame);
+        }, 1000);
+    }
   };
 
   checkIsCorrect = (movs, boardGame) => {
@@ -70,11 +76,9 @@ class App extends Component {
         toSolve: this.state.toSolve - 1
       });
     } else {
-      setTimeout(() => {
-        boardGame[mov1.row][mov1.col].show = false;
-        boardGame[mov2.row][mov2.col].show = false;
-        this.setState({ boardGame: boardGame, movs: [] });
-      }, 1500);
+      boardGame[mov1.row][mov1.col].show = false;
+      boardGame[mov2.row][mov2.col].show = false;
+      this.setState({ boardGame: boardGame, movs: [] });
     }
   };
 

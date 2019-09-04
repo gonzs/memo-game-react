@@ -13,9 +13,7 @@ const Row = ({ value, rowNumber, changeCard }) => {
                 src={elem.src}
                 alt={index}
                 className="fixed_img"
-                onClick={() => {
-                  if (elem.show) changeCard.bind(this, rowNumber, index);
-                }}
+                onClick={changeCard.bind(this, rowNumber, index)}
               ></img>
             ) : (
               <img
