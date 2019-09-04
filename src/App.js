@@ -55,7 +55,7 @@ class App extends Component {
       if (updatedMovs.length === 2)
         setTimeout(() => {
           this.checkIsCorrect(updatedMovs, boardGame);
-        }, 1000);
+        }, 500);
     }
   };
 
@@ -75,6 +75,7 @@ class App extends Component {
         movs: [],
         toSolve: this.state.toSolve - 1
       });
+      if (this.state.toSolve === 0) alert("GANASTE");
     } else {
       boardGame[mov1.row][mov1.col].show = false;
       boardGame[mov2.row][mov2.col].show = false;
