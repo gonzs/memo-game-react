@@ -7,17 +7,39 @@ class App extends Component {
     boardGame: [],
     toSolve: 0,
     movs: [],
-    block: false
+    level: "easy",
+    wait: 0
   };
 
-  componentDidMount() {
-    const n = 8;
+  startGame = () => {
+    let n = 0;
     let board = [];
     let index = 0;
+    let wait = 0;
+    Images.forEach(elem => {
+      elem.repeat = 2;
+    });
 
-    for (let i = 0; i < n / 2; i++) {
+    switch (this.state.level) {
+      case "easy":
+        n = 8;
+        wait = 500;
+        break;
+      case "medium":
+        n = 12;
+        wait = 500;
+        break;
+      case "hard":
+        n = 12;
+        wait = 250;
+        break;
+      default:
+        break;
+    }
+
+    for (let i = 0; i < (n * 2) / 4; i++) {
       let auxBoard = [];
-      for (let j = 0; j < n / 2; j++) {
+      for (let j = 0; j < 4; j++) {
         do {
           index = Math.floor(Math.random() * n);
         } while (Images[index].repeat === 0);
@@ -33,11 +55,18 @@ class App extends Component {
       board.push(auxBoard);
     }
 
-    this.setState({ boardGame: board, toSolve: n });
-  }
+    console.log(Images);
+
+    this.setState({ boardGame: board, toSolve: n, wait: wait });
+  };
 
   changeCard = async (rowNumber, colNumber) => {
-    if (this.state.movs.length < 2) {
+    if (
+      this.state.movs.length === 0 ||
+      (this.state.movs.length === 1 &&
+        (this.state.movs[0].row !== rowNumber ||
+          this.state.movs[0].col !== colNumber))
+    ) {
       let boardGame = this.state.boardGame;
       boardGame[rowNumber][colNumber].show = !this.state.boardGame[rowNumber][
         colNumber
@@ -55,7 +84,7 @@ class App extends Component {
       if (updatedMovs.length === 2)
         setTimeout(() => {
           this.checkIsCorrect(updatedMovs, boardGame);
-        }, 500);
+        }, this.state.wait);
     }
   };
 
@@ -75,7 +104,10 @@ class App extends Component {
         movs: [],
         toSolve: this.state.toSolve - 1
       });
-      if (this.state.toSolve === 0) alert("GANASTE");
+      if (this.state.toSolve === 0) {
+        alert("¡¡¡YOU WIN!!!");
+        this.setState({ boardGame: [] });
+      }
     } else {
       boardGame[mov1.row][mov1.col].show = false;
       boardGame[mov2.row][mov2.col].show = false;
@@ -83,24 +115,43 @@ class App extends Component {
     }
   };
 
+  handleChange(event) {
+    this.setState({ level: event.target.value });
+  }
+
   render() {
     return (
       <Fragment>
         <h1 align="center">MEMO-GAME</h1>
-        <table align="center">
-          <tbody>
-            {this.state.boardGame.map((row, index) => {
-              return (
-                <Row
-                  value={row}
-                  key={index}
-                  rowNumber={index}
-                  changeCard={this.changeCard}
-                />
-              );
-            })}
-          </tbody>
-        </table>
+        {this.state.toSolve === 0 ? (
+          <div align="center">
+            <select
+              value={this.state.level}
+              onChange={this.handleChange.bind(this)}
+            >
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+            <br />
+            <button onClick={this.startGame.bind(this)}>Start</button>
+          </div>
+        ) : (
+          <table align="center">
+            <tbody>
+              {this.state.boardGame.map((row, index) => {
+                return (
+                  <Row
+                    value={row}
+                    key={index}
+                    rowNumber={index}
+                    changeCard={this.changeCard}
+                  />
+                );
+              })}
+            </tbody>
+          </table>
+        )}
       </Fragment>
     );
   }
