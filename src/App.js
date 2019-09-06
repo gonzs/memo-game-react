@@ -8,7 +8,8 @@ class App extends Component {
     toSolve: 0,
     movs: [],
     level: "easy",
-    wait: 0
+    wait: 0,
+    begin: 0
   };
 
   startGame = () => {
@@ -55,9 +56,12 @@ class App extends Component {
       board.push(auxBoard);
     }
 
-    console.log(Images);
-
-    this.setState({ boardGame: board, toSolve: n, wait: wait });
+    this.setState({
+      boardGame: board,
+      toSolve: n,
+      wait: wait,
+      begin: Date.now()
+    });
   };
 
   changeCard = async (rowNumber, colNumber) => {
@@ -105,7 +109,10 @@ class App extends Component {
         toSolve: this.state.toSolve - 1
       });
       if (this.state.toSolve === 0) {
-        alert("¡¡¡YOU WIN!!!");
+        let end = Date.now();
+
+        let timeSpent = (end - this.state.begin) / 1000;
+        alert("¡¡¡YOU WIN!!! and your time was " + timeSpent + " secs");
         this.setState({ boardGame: [] });
       }
     } else {
