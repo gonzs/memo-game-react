@@ -2,7 +2,7 @@ import React from "react";
 
 const SelectionScreen = ({ level, handleChange, startGame }) => {
   return (
-    <div align="center">
+    <div>
       <select value={level} onChange={handleChange}>
         <option value="easy">Easy</option>
         <option value="medium">Medium</option>
