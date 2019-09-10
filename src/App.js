@@ -1,8 +1,10 @@
 import React, { Fragment, Component } from "react";
 import { Images } from "./config/data";
-import Row from "./Row";
+import Board from "./Board";
+import SelectionScreen from "./SelectionScreen";
 
 class App extends Component {
+  /* Application State */
   state = {
     boardGame: [],
     toSolve: 0,
@@ -12,35 +14,40 @@ class App extends Component {
     begin: 0
   };
 
-  startGame = () => {
-    let n = 0;
-    let board = [];
-    let index = 0;
-    let wait = 0;
-    Images.forEach(elem => {
-      elem.repeat = 2;
-    });
-
-    switch (this.state.level) {
+  /* Define difficulty level */
+  defineLevel(level) {
+    switch (level) {
       case "easy":
-        n = 8;
-        wait = 500;
-        break;
+        return { n: 8, wait: 500 };
       case "medium":
-        n = 12;
-        wait = 500;
-        break;
+        return { n: 12, wait: 500 };
       case "hard":
-        n = 12;
-        wait = 250;
-        break;
+        return { n: 12, wait: 250 };
       default:
         break;
     }
+  }
+
+  /* Put default valut for repeat property  */
+  setDefaultValuesImages() {
+    Images.forEach(elem => {
+      elem.repeat = 2;
+    });
+  }
+
+  /* Fill board game */
+  startGame() {
+    let board = [];
+    let index = 0;
+
+    this.setDefaultValuesImages();
+
+    let { n, wait } = this.defineLevel(this.state.level);
 
     for (let i = 0; i < (n * 2) / 4; i++) {
       let auxBoard = [];
       for (let j = 0; j < 4; j++) {
+        /*Select random image */
         do {
           index = Math.floor(Math.random() * n);
         } while (Images[index].repeat === 0);
@@ -62,8 +69,9 @@ class App extends Component {
       wait: wait,
       begin: Date.now()
     });
-  };
+  }
 
+  /* Validations when press a card */
   changeCard = async (rowNumber, colNumber) => {
     if (
       this.state.movs.length === 0 ||
@@ -92,7 +100,8 @@ class App extends Component {
     }
   };
 
-  checkIsCorrect = (movs, boardGame) => {
+  /* Validation when discover 2 cards */
+  checkIsCorrect(movs, boardGame) {
     let mov1 = movs[0];
     let mov2 = movs[1];
     let id1 = boardGame[mov1.row][mov1.col].id;
@@ -120,8 +129,9 @@ class App extends Component {
       boardGame[mov2.row][mov2.col].show = false;
       this.setState({ boardGame: boardGame, movs: [] });
     }
-  };
+  }
 
+  /* Handle action of Select component */
   handleChange(event) {
     this.setState({ level: event.target.value });
   }
@@ -131,33 +141,16 @@ class App extends Component {
       <Fragment>
         <h1 align="center">MEMO-GAME</h1>
         {this.state.toSolve === 0 ? (
-          <div align="center">
-            <select
-              value={this.state.level}
-              onChange={this.handleChange.bind(this)}
-            >
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-            <br />
-            <button onClick={this.startGame.bind(this)}>Start</button>
-          </div>
+          <SelectionScreen
+            level={this.state.level}
+            handleChange={this.handleChange.bind(this)}
+            startGame={this.startGame.bind(this)}
+          />
         ) : (
-          <table align="center">
-            <tbody>
-              {this.state.boardGame.map((row, index) => {
-                return (
-                  <Row
-                    value={row}
-                    key={index}
-                    rowNumber={index}
-                    changeCard={this.changeCard}
-                  />
-                );
-              })}
-            </tbody>
-          </table>
+          <Board
+            boardGame={this.state.boardGame}
+            changeCard={this.changeCard}
+          />
         )}
       </Fragment>
     );
