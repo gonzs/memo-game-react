@@ -3,7 +3,7 @@ import Row from "./Row";
 
 const Board = ({ boardGame, changeCard }) => {
   return (
-    <table>
+    <table align="center">
       <tbody>
         {boardGame.map((row, index) => {
           return (
