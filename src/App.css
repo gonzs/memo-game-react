@@ -33,7 +33,7 @@
 }
 
 .board > div {
-  justify-self: stretch;
-  align-self: stretch;
+  justify-self: center;
+  align-self: center;
   border: 10px solid black;
 }
