@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -15,9 +15,25 @@
 
 .App-link {
   color: #61dafb;
-}
+} */
 
 .fixed_img {
   width: 100px;
   height: 100px;
+}
+
+.board {
+  width: 90%;
+  margin: auto;
+  border: 10px solid black;
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+}
+
+.board > div {
+  justify-self: stretch;
+  align-self: stretch;
+  border: 10px solid black;
 }
