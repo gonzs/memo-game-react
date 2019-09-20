@@ -129,10 +129,8 @@ class App extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div>
-          <h1>M E M O - G A M E</h1>
-        </div>
+      <div>
+        <h1>M E M O - G A M E</h1>
         {this.state.toSolve === 0 ? (
           <div>
             <SelectionScreen
