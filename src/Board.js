@@ -1,6 +1,6 @@
 import React from 'react';
 import back from './images/back.jpg';
-import './App.css';
+import './Styles.css';
 
 const Board = ({ boardGame, changeCard }) => {
   return (

@@ -1,7 +1,8 @@
-import React, { Fragment, Component } from 'react';
+import React, { Component } from 'react';
 import { Images } from './config/data';
 import Board from './Board';
 import SelectionScreen from './SelectionScreen';
+import './Styles.css';
 
 class App extends Component {
   /* Application State */
@@ -128,21 +129,27 @@ class App extends Component {
 
   render() {
     return (
-      <Fragment>
-        <h1 align="center">MEMO-GAME</h1>
+      <div className="container">
+        <div>
+          <h1>M E M O - G A M E</h1>
+        </div>
         {this.state.toSolve === 0 ? (
-          <SelectionScreen
-            level={this.state.level}
-            handleChange={this.handleChange.bind(this)}
-            startGame={this.startGame.bind(this)}
-          />
+          <div>
+            <SelectionScreen
+              level={this.state.level}
+              handleChange={this.handleChange.bind(this)}
+              startGame={this.startGame.bind(this)}
+            />
+          </div>
         ) : (
-          <Board
-            boardGame={this.state.boardGame}
-            changeCard={this.changeCard}
-          />
+          <div>
+            <Board
+              boardGame={this.state.boardGame}
+              changeCard={this.changeCard}
+            />
+          </div>
         )}
-      </Fragment>
+      </div>
     );
   }
 }
