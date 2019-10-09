@@ -1,22 +1,33 @@
-import React from "react";
-import Row from "./Row";
+import React from 'react';
+import back from './images/back.jpg';
+import './Styles.css';
 
 const Board = ({ boardGame, changeCard }) => {
   return (
-    <table align="center">
-      <tbody>
-        {boardGame.map((row, index) => {
+    <div className="board">
+      {boardGame.map((elem, index) => {
+        if (elem.show)
           return (
-            <Row
-              value={row}
-              key={index}
-              rowNumber={index}
-              changeCard={changeCard}
-            />
+            <div key={index}>
+              <img
+                src={elem.src}
+                alt={index}
+                onClick={changeCard.bind(this, index)}
+              ></img>
+            </div>
           );
-        })}
-      </tbody>
-    </table>
+        else
+          return (
+            <div key={index}>
+              <img
+                src={back}
+                alt={index}
+                onClick={changeCard.bind(this, index)}
+              ></img>
+            </div>
+          );
+      })}
+    </div>
   );
 };
 export default Board;
